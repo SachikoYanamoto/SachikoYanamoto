@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>日記 | 柳本幸子</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Shippori+Mincho:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <header class="site-header" id="site-header"></header>
+  <main>
+    <article class="post" id="post"></article>
+  </main>
+  <footer class="site-footer" id="site-footer"></footer>
+
+  <script src="assets/site.js"></script>
+  <script>
+    Site.header("diary");
+    (async () => {
+      const posts = Site.publishedPosts(await Site.load("posts"));
+      const id = new URLSearchParams(location.search).get("id");
+      const i = posts.findIndex((p) => p.id === id);
+      const el = document.getElementById("post");
+      if (i < 0) {
+        el.innerHTML = `<p class="empty">記事が見つかりませんでした。<br><a href="diary.html">日記の一覧へ</a></p>`;
+        return;
+      }
+      const p = posts[i], newer = posts[i - 1], older = posts[i + 1];
+      const { wd } = Site.dateParts(p.date);
+      document.title = `${p.title} | 柳本幸子`;
+      el.innerHTML = `
+        <div class="d">${Site.dotDate(p.date)} <span style="font-family:var(--mincho);font-size:.85rem">(${wd})</span></div>
+        <h1>${Site.esc(p.title)}</h1>
+        <div class="body">${Site.formatBody(p.body)}</div>
+        ${p.images?.length ? `<div class="imgs">${p.images.map((src) => `<img src="${Site.esc(src)}" alt="" loading="lazy">`).join("")}</div>` : ""}
+        <nav class="post-nav">
+          <span>${newer ? `<a href="post.html?id=${encodeURIComponent(newer.id)}">新しい日記<br>${Site.esc(newer.title)}</a>` : ""}</span>
+          <a href="diary.html">一覧</a>
+          <span>${older ? `<a href="post.html?id=${encodeURIComponent(older.id)}">前の日記<br>${Site.esc(older.title)}</a>` : ""}</span>
+        </nav>`;
+    })();
+  </script>
+</body>
+</html>

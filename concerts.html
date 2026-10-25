@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>公演・チラシ | 柳本幸子</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Shippori+Mincho:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <header class="site-header" id="site-header"></header>
+  <main>
+    <div class="page-title"><h1>公演・チラシ</h1><span class="it">Concerti</span></div>
+    <div class="filters" id="cats"></div>
+
+    <div class="section-head"><h2>公演予定</h2><span class="it">Prossimamente</span></div>
+    <ul class="sched" id="upcoming"></ul>
+
+    <div class="section-head"><h2>これまでの公演</h2><span class="it">Archivio</span></div>
+    <div id="past"></div>
+  </main>
+  <footer class="site-footer" id="site-footer"></footer>
+
+  <div class="modal" id="modal" role="dialog" aria-modal="true">
+    <div class="modal-box">
+      <button class="modal-close" aria-label="閉じる">×</button>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+
+  <script src="assets/site.js"></script>
+  <script>
+    Site.header("concerts");
+    const CATS = ["すべて", "リサイタル", "コンサート", "イベント", "その他"];
+    let cat = "すべて";
+    let events = [];
+
+    function flyerCard(e) {
+      const { m, d } = Site.dateParts(e.date);
+      return `
+        <button class="flyer-card" data-id="${Site.esc(e.id)}">
+          <div class="flyer">${e.flyer ? `<img src="${Site.esc(e.flyer)}" alt="${Site.esc(e.title)} チラシ" loading="lazy">` : `<div class="noflyer">${Site.esc(e.title)}</div>`}</div>
+          <div class="d">${m}.${d}<span class="cat">${Site.esc(e.category)}</span></div>
+          <div class="t">${Site.esc(e.title)}</div>
+        </button>`;
+    }
+
+    function render() {
+      document.getElementById("cats").innerHTML = CATS.map((c) => `<button data-c="${c}" class="${c === cat ? "on" : ""}">${c}</button>`).join("");
+      const today = Site.today();
+      const list = events.filter((e) => cat === "すべて" || e.category === cat);
+      const upcoming = list.filter((e) => e.date >= today).reverse();
+      const past = list.filter((e) => e.date < today);
+
+      document.getElementById("upcoming").innerHTML = upcoming.length
+        ? upcoming.map((e) => Site.schedRow(e, "button", `data-id="${Site.esc(e.id)}"`)).join("")
+        : `<li class="empty">現在予定されている公演はありません</li>`;
+
+      const years = [...new Set(past.map((e) => e.date.slice(0, 4)))];
+      document.getElementById("past").innerHTML = years.length
+        ? years.map((y) => `
+          <section class="year-block">
+            <div class="y">${y}</div>
+            <div class="flyer-grid">${past.filter((e) => e.date.startsWith(y)).map(flyerCard).join("")}</div>
+          </section>`).join("")
+        : `<p class="empty">該当する公演はありません</p>`;
+    }
+
+    function openModal(id) {
+      const e = events.find((x) => x.id === id);
+      if (!e) return;
+      const rows = [["日時", `${Site.formatDate(e.date)} ${e.time || ""}`], ["会場", e.venue], ["出演", e.performers], ["曲目", e.program]]
+        .filter(([, v]) => v && v.trim())
+        .map(([k, v]) => `<dt>${k}</dt><dd>${Site.esc(v)}</dd>`).join("");
+      const flyers = [e.flyer, e.flyerBack].filter(Boolean);
+      document.getElementById("modal-body").innerHTML = `
+        <div class="modal-grid" style="${flyers.length ? "" : "grid-template-columns:1fr"}">
+          ${flyers.length ? `<div class="modal-flyers">${flyers.map((f) => `<a href="${Site.esc(f)}" target="_blank" rel="noopener"><img src="${Site.esc(f)}" alt="チラシ"></a>`).join("")}</div>` : ""}
+          <div>
+            <span class="cat">${Site.esc(e.category)}</span>
+            <h2>${Site.esc(e.title)}</h2>
+            <dl class="detail">${rows}</dl>
+            ${e.description ? `<div class="bio" style="margin-top:24px">${Site.formatBody(e.description)}</div>` : ""}
+          </div>
+        </div>`;
+      document.getElementById("modal").classList.add("open");
+      history.replaceState(null, "", "#" + encodeURIComponent(id));
+    }
+    function closeModal() {
+      document.getElementById("modal").classList.remove("open");
+      history.replaceState(null, "", location.pathname);
+    }
+
+    document.getElementById("cats").addEventListener("click", (e) => { if (e.target.dataset.c) { cat = e.target.dataset.c; render(); } });
+    document.querySelector("main").addEventListener("click", (e) => { const c = e.target.closest("[data-id]"); if (c) openModal(c.dataset.id); });
+    document.getElementById("modal").addEventListener("click", (e) => { if (e.target.id === "modal" || e.target.closest(".modal-close")) closeModal(); });
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeModal(); });
+
+    (async () => {
+      events = Site.sortedEvents(await Site.load("events"));
+      render();
+      if (location.hash) openModal(decodeURIComponent(location.hash.slice(1)));
+    })();
+  </script>
+</body>
+</html>

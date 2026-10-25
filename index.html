@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>柳本幸子 | ソプラノ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Shippori+Mincho:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <header class="site-header" id="site-header"></header>
+  <main>
+    <section class="hero">
+      <div class="hero-photo" id="photo">写真は本人用ページから設定できます</div>
+      <div class="hero-text">
+        <h1 id="name">柳本幸子</h1>
+        <div class="hero-side">
+          <p class="role" id="role">ソプラノ</p>
+          <p class="en" id="name-en"></p>
+          <p class="catch" id="catch"></p>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-head"><h2>公演予定</h2><span class="it">Concerti</span><a class="more" href="concerts.html">これまでの公演</a></div>
+    <ul class="sched" id="upcoming"></ul>
+
+    <div class="section-head"><h2>日記</h2><span class="it">Diario</span><a class="more" href="diary.html">日記をすべて見る</a></div>
+    <ul class="post-list" id="recent-posts"></ul>
+
+    <div class="section-head"><h2>プロフィール</h2><span class="it">Biografia</span></div>
+    <div class="bio-wrap">
+      <div class="bio" id="bio"></div>
+      <p id="contact"></p>
+    </div>
+  </main>
+  <footer class="site-footer" id="site-footer"></footer>
+
+  <script src="assets/site.js"></script>
+  <script>
+    Site.header("home");
+    (async () => {
+      const [profile, posts, events] = await Promise.all([Site.load("profile"), Site.load("posts"), Site.load("events")]);
+
+      document.getElementById("role").textContent = profile.role;
+      document.getElementById("name").textContent = profile.name;
+      document.getElementById("name-en").textContent = profile.nameEn;
+      document.getElementById("catch").textContent = profile.catchphrase;
+      document.getElementById("catch").hidden = !profile.catchphrase;
+      document.getElementById("bio").innerHTML = Site.formatBody(profile.bio);
+      if (profile.contact) document.getElementById("contact").innerHTML = "お問い合わせ: " + Site.formatBody(profile.contact).replace(/^<p>|<\/p>$/g, "");
+      if (profile.photo) document.getElementById("photo").innerHTML = `<img src="${Site.esc(profile.photo)}" alt="${Site.esc(profile.name)}">`;
+
+      const upcoming = Site.sortedEvents(events).filter((e) => e.date >= Site.today()).reverse().slice(0, 5);
+      document.getElementById("upcoming").innerHTML = upcoming.length
+        ? upcoming.map((e) => Site.schedRow(e, "a", `href="concerts.html#${encodeURIComponent(e.id)}"`)).join("")
+        : `<li class="empty">現在予定されている公演はありません</li>`;
+
+      const recent = Site.publishedPosts(posts).slice(0, 5);
+      document.getElementById("recent-posts").innerHTML = recent.length
+        ? recent.map((p) => `<li><a href="post.html?id=${encodeURIComponent(p.id)}"><span class="d">${Site.dotDate(p.date)}</span><span class="t">${Site.esc(p.title)}</span></a></li>`).join("")
+        : `<li class="empty">まだ日記はありません</li>`;
+    })();
+  </script>
+</body>
+</html>
