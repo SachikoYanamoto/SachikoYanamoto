@@ -1,0 +1,28 @@
+[
+  {
+    "id": "sample-1",
+    "date": "2026-12-20",
+    "time": "14:00開演",
+    "title": "【サンプル】クリスマス・コンサート",
+    "category": "コンサート",
+    "venue": "○○ホール",
+    "performers": "柳本幸子(ソプラノ)/ ○○○○(ピアノ)",
+    "program": "曲目をここに入力",
+    "description": "これはサンプルの公演です。本人用ページの「公演・チラシ」から編集・削除できます。",
+    "flyer": "images/flyers/sample-flyer.svg",
+    "flyerBack": ""
+  },
+  {
+    "id": "sample-2",
+    "date": "2025-06-14",
+    "time": "",
+    "title": "【サンプル】ソプラノ・リサイタル",
+    "category": "リサイタル",
+    "venue": "○○サロン",
+    "performers": "",
+    "program": "",
+    "description": "過去の公演のサンプルです。",
+    "flyer": "",
+    "flyerBack": ""
+  }
+]

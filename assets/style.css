@@ -1,0 +1,192 @@
+/* 配色: イタリアの漆喰の白、オリーブの深い緑、テラコッタの赤 */
+:root {
+  --paper: #f3eee4;
+  --paper-2: #ebe4d6;
+  --ink: #1f1b17;
+  --muted: #6f665b;
+  --verde: #24473a;
+  --rosso: #9c2b20;
+  --line: #d6ccba;
+  --mincho: "Shippori Mincho", "Yu Mincho", "Hiragino Mincho ProN", serif;
+  --latin: "Cormorant Garamond", "Garamond", serif;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--mincho);
+  font-size: 16px;
+  line-height: 2;
+  letter-spacing: 0.03em;
+}
+img { max-width: 100%; display: block; }
+a { color: var(--verde); text-underline-offset: 4px; text-decoration-thickness: 1px; }
+a:hover { color: var(--rosso); }
+.latin { font-family: var(--latin); }
+
+/* ---------- header ---------- */
+.site-header { background: var(--paper); border-bottom: 1px solid var(--ink); }
+.site-header::before {
+  content: ""; display: block; height: 4px;
+  background: linear-gradient(90deg, var(--verde) 0 33.3%, var(--paper) 33.3% 66.6%, var(--rosso) 66.6%);
+}
+.site-header .inner {
+  max-width: 1120px; margin: 0 auto; padding: 18px 24px;
+  display: flex; align-items: flex-end; justify-content: space-between; gap: 12px 24px; flex-wrap: wrap;
+}
+.brand { text-decoration: none; color: var(--ink); display: flex; align-items: baseline; gap: 14px; line-height: 1.2; }
+.brand:hover { color: var(--ink); }
+.brand .ja { font-size: 1.45rem; font-weight: 600; letter-spacing: 0.12em; }
+.brand .en { font-family: var(--latin); font-style: italic; font-size: 1.05rem; color: var(--muted); letter-spacing: 0.02em; }
+.site-nav { display: flex; gap: 28px; line-height: 1.2; }
+.site-nav a { text-decoration: none; color: var(--ink); font-size: 0.95rem; padding-bottom: 4px; border-bottom: 2px solid transparent; }
+.site-nav a:hover { color: var(--verde); }
+.site-nav a.active { border-bottom-color: var(--rosso); }
+
+main { max-width: 1120px; margin: 0 auto; padding: 56px 24px 96px; }
+
+/* ページ見出し: 日本語 + イタリア語(斜体) */
+.page-title {
+  display: flex; align-items: baseline; gap: 18px; flex-wrap: wrap;
+  border-bottom: 1px solid var(--ink); padding-bottom: 14px; margin: 0 0 36px;
+}
+.page-title h1 { margin: 0; font-size: 2rem; font-weight: 600; letter-spacing: 0.08em; line-height: 1.3; }
+.page-title .it { font-family: var(--latin); font-style: italic; font-size: 1.5rem; color: var(--verde); }
+
+.section-head {
+  display: flex; align-items: baseline; gap: 16px;
+  border-top: 1px solid var(--ink); margin: 72px 0 24px; padding-top: 14px;
+}
+.section-head h2 { margin: 0; font-size: 1.3rem; font-weight: 600; letter-spacing: 0.08em; }
+.section-head .it { font-family: var(--latin); font-style: italic; color: var(--verde); font-size: 1.15rem; }
+.section-head .more { margin-left: auto; font-size: 0.9rem; }
+
+/* ---------- top ---------- */
+.hero { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 56px; align-items: stretch; }
+.hero-photo { aspect-ratio: 4 / 5; background: var(--paper-2); border: 1px solid var(--line); overflow: hidden;
+  display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 0.85rem; }
+.hero-photo img { width: 100%; height: 100%; object-fit: cover; }
+.hero-text { display: flex; gap: 40px; padding-top: 8px; }
+.hero-text h1 {
+  writing-mode: vertical-rl; margin: 0; font-size: 3.4rem; font-weight: 600; letter-spacing: 0.35em; line-height: 1;
+}
+.hero-side { display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 8px; }
+.hero-side .role { color: var(--rosso); font-size: 1rem; letter-spacing: 0.3em; margin: 0; }
+.hero-side .en { font-family: var(--latin); font-style: italic; font-size: 1.7rem; color: var(--verde); margin: 0 0 24px; line-height: 1.3; }
+.hero-side .catch { margin: 0; font-size: 1.05rem; border-left: 2px solid var(--rosso); padding-left: 16px; }
+.bio p { margin: 0 0 1.2em; }
+.bio-wrap { max-width: 760px; }
+
+/* 公演予定のリスト(プログラムの日程表のような形) */
+.sched { list-style: none; padding: 0; margin: 0; }
+.sched li { border-bottom: 1px solid var(--line); }
+.sched li:first-child { border-top: 1px solid var(--line); }
+.sched a, .sched button {
+  display: grid; grid-template-columns: 96px minmax(0, 1fr) 84px; gap: 24px; align-items: center;
+  padding: 20px 0; text-decoration: none; color: var(--ink); width: 100%;
+  background: none; border: 0; font: inherit; text-align: left; cursor: pointer;
+}
+.sched a:hover .t, .sched button:hover .t { color: var(--verde); }
+.sched .date { line-height: 1; }
+.sched .day { font-family: var(--latin); font-size: 3rem; font-weight: 500; display: block; }
+.sched .ym { font-family: var(--latin); font-size: 1rem; color: var(--muted); display: block; margin-top: 6px; }
+.sched .cat { color: var(--rosso); font-size: 0.8rem; letter-spacing: 0.1em; }
+.sched .t { font-size: 1.15rem; font-weight: 600; line-height: 1.6; display: block; }
+.sched .v { color: var(--muted); font-size: 0.9rem; display: block; line-height: 1.7; }
+.sched .thumb { width: 84px; aspect-ratio: 1 / 1.414; object-fit: cover; border: 1px solid var(--line); background: var(--paper-2); }
+
+/* ---------- diary ---------- */
+.post-list { list-style: none; padding: 0; margin: 0; }
+.post-list li { border-bottom: 1px solid var(--line); }
+.post-list li:first-child { border-top: 1px solid var(--line); }
+.post-list a { display: grid; grid-template-columns: 130px minmax(0, 1fr); gap: 24px; padding: 20px 0; text-decoration: none; color: var(--ink); }
+.post-list a:hover .t { color: var(--verde); }
+.post-list .d { font-family: var(--latin); font-size: 1.1rem; color: var(--muted); }
+.post-list .t { font-size: 1.08rem; font-weight: 600; display: block; line-height: 1.7; }
+.post-list .x { color: var(--muted); font-size: 0.9rem; margin-top: 4px; line-height: 1.8;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+.post { max-width: 700px; }
+.post .d { font-family: var(--latin); font-size: 1.15rem; color: var(--muted); }
+.post h1 { font-size: 1.8rem; font-weight: 600; margin: 4px 0 36px; line-height: 1.6; letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--ink); padding-bottom: 20px; }
+.post .body { font-size: 1.04rem; }
+.post .body p { margin: 0 0 1.6em; }
+.post .imgs { display: grid; gap: 20px; margin: 36px 0; }
+.post-nav { display: grid; grid-template-columns: 1fr auto 1fr; gap: 16px; margin-top: 64px;
+  border-top: 1px solid var(--ink); padding-top: 18px; font-size: 0.9rem; line-height: 1.7; }
+.post-nav span:last-child { text-align: right; }
+
+/* ---------- 絞り込み(下線のタブ) ---------- */
+.filters { display: flex; flex-wrap: wrap; gap: 4px 24px; margin: -12px 0 8px; }
+.filters button {
+  font: inherit; font-size: 0.95rem; background: none; border: 0; border-bottom: 2px solid transparent;
+  padding: 4px 0; color: var(--muted); cursor: pointer;
+}
+.filters button:hover { color: var(--ink); }
+.filters button.on { color: var(--ink); border-bottom-color: var(--rosso); }
+
+/* ---------- 過去の公演: 年ごとにチラシを並べる ---------- */
+.year-block { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 24px; padding: 28px 0; border-top: 1px solid var(--line); }
+.year-block:first-of-type { border-top: 0; }
+.year-block .y { font-family: var(--latin); font-size: 2.4rem; line-height: 1; color: var(--verde); }
+.flyer-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 32px 24px; }
+.flyer-card { background: none; border: 0; padding: 0; text-align: left; font: inherit; color: inherit; cursor: pointer; }
+.flyer-card .flyer {
+  aspect-ratio: 1 / 1.414; background: var(--paper-2); border: 1px solid var(--line); overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+.flyer-card:hover .flyer { border-color: var(--ink); }
+.flyer-card .flyer img { width: 100%; height: 100%; object-fit: cover; }
+.flyer-card .noflyer { padding: 16px; text-align: center; font-size: 0.9rem; line-height: 1.7; color: var(--muted); }
+.flyer-card .d { font-family: var(--latin); font-size: 1rem; color: var(--muted); margin-top: 10px; line-height: 1.4; }
+.flyer-card .t { font-size: 0.95rem; line-height: 1.6; }
+.flyer-card .cat { color: var(--rosso); font-size: 0.78rem; margin-left: 8px; font-family: var(--mincho); }
+
+.empty { color: var(--muted); padding: 24px 0; margin: 0; }
+
+/* ---------- modal ---------- */
+.modal { position: fixed; inset: 0; background: rgba(25, 22, 18, .78); z-index: 50;
+  display: none; align-items: flex-start; justify-content: center; overflow-y: auto; padding: 40px 16px; }
+.modal.open { display: flex; }
+.modal-box { background: var(--paper); max-width: 980px; width: 100%; padding: 40px; position: relative; border-top: 4px solid var(--verde); }
+.modal-close { position: absolute; top: 10px; right: 14px; background: none; border: 0; font-size: 1.8rem; line-height: 1; cursor: pointer; color: var(--ink); }
+.modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+.modal-flyers { display: grid; gap: 14px; align-content: start; }
+.modal-flyers a { display: block; border: 1px solid var(--line); }
+.modal .cat { color: var(--rosso); font-size: 0.85rem; letter-spacing: 0.1em; }
+.modal h2 { font-weight: 600; font-size: 1.5rem; margin: 2px 0 20px; line-height: 1.6; border-bottom: 1px solid var(--ink); padding-bottom: 14px; }
+.detail { margin: 0; display: grid; grid-template-columns: 4.5em 1fr; gap: 10px 12px; }
+.detail dt { color: var(--verde); font-size: 0.9rem; }
+.detail dd { margin: 0; white-space: pre-wrap; line-height: 1.8; }
+
+/* footer */
+.site-footer { border-top: 1px solid var(--ink); }
+.site-footer .inner { max-width: 1120px; margin: 0 auto; padding: 24px; display: flex; justify-content: space-between;
+  gap: 8px 24px; flex-wrap: wrap; font-size: 0.85rem; color: var(--muted); }
+.site-footer .latin { font-style: italic; font-size: 1rem; }
+
+@media (max-width: 760px) {
+  main { padding: 36px 16px 72px; }
+  .site-header .inner { padding: 14px 16px; }
+  .brand .en { display: none; }
+  .site-nav { gap: 20px; }
+  .page-title h1 { font-size: 1.6rem; }
+  .hero { grid-template-columns: 1fr; gap: 28px; }
+  .hero-photo { aspect-ratio: 1 / 1; }
+  .hero-text { gap: 20px; }
+  .hero-text h1 { font-size: 2.6rem; }
+  .sched a, .sched button { grid-template-columns: 64px minmax(0, 1fr) 60px; gap: 14px; }
+  .sched .day { font-size: 2.3rem; }
+  .sched .ym { font-size: 0.85rem; }
+  .sched .thumb { width: 60px; }
+  .post-list a { grid-template-columns: 1fr; gap: 2px; }
+  .year-block { grid-template-columns: 1fr; gap: 14px; }
+  .flyer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 14px; }
+  .modal { padding: 16px 10px; }
+  .modal-box { padding: 32px 18px 24px; }
+  .modal-grid { grid-template-columns: 1fr; gap: 24px; }
+}

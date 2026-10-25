@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>本人用ページ | 柳本幸子</title>
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body class="loading">
+  <header class="bar">
+    <div class="bar-title">本人用ページ<small>ここで書いた内容がサイトに載ります</small></div>
+    <div class="bar-links">
+      <a class="view-link" href="../" target="_blank">サイトを見る ↗</a>
+      <button class="view-link" id="forget" hidden>設定</button>
+    </div>
+  </header>
+
+  <div id="offline" class="offline" hidden></div>
+
+  <section id="setup" class="setup" hidden>
+    <form id="setup-form" class="editor">
+      <h2>はじめての設定</h2>
+      <p>この端末(スマホ・パソコン)から書けるようにするために、最初に一度だけ「鍵」を入れます。<br>
+        鍵は家族から受け取ったものを貼り付けてください。この端末の中にだけ保存されます。</p>
+      <label>鍵(トークン)<input type="password" name="token" required autocomplete="off" placeholder="github_pat_ で始まる文字"></label>
+      <details>
+        <summary>保存先(ふつうは変更不要)</summary>
+        <div class="row">
+          <label>ユーザー名<input type="text" name="owner" required></label>
+          <label>リポジトリ名<input type="text" name="repo" required></label>
+        </div>
+      </details>
+      <div class="actions"><button type="submit" class="primary big">この端末で使えるようにする</button></div>
+    </form>
+  </section>
+
+  <nav class="tabs">
+    <button data-tab="posts" class="on">日記</button>
+    <button data-tab="events">公演・チラシ</button>
+    <button data-tab="profile">プロフィール</button>
+  </nav>
+
+  <main>
+    <!-- 日記 -->
+    <section id="tab-posts">
+      <div id="posts-list">
+        <button class="primary big" id="new-post">＋ 新しい日記を書く</button>
+        <ul class="items" id="posts-items"></ul>
+      </div>
+      <form id="post-form" class="editor" hidden>
+        <h2 id="post-form-title">日記を書く</h2>
+        <label>日付<input type="date" name="date" required></label>
+        <label>タイトル<input type="text" name="title" required placeholder="例:リハーサルの日"></label>
+        <label>本文<textarea name="body" rows="14" placeholder="空行をはさむと段落が分かれます"></textarea></label>
+        <div class="field">
+          <div class="label">写真(何枚でも)</div>
+          <div class="thumbs" id="post-images"></div>
+          <label class="file-btn">写真を追加<input type="file" accept="image/*" multiple id="post-image-input" hidden></label>
+        </div>
+        <label class="check"><input type="checkbox" name="draft"> 下書きにする(サイトには表示しない)</label>
+        <div class="actions">
+          <button type="submit" class="primary big">保存する</button>
+          <button type="button" class="ghost" data-cancel>やめる</button>
+          <button type="button" class="danger" id="delete-post">この日記を削除</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- 公演 -->
+    <section id="tab-events" hidden>
+      <div id="events-list">
+        <button class="primary big" id="new-event">＋ 公演を追加する</button>
+        <ul class="items" id="events-items"></ul>
+      </div>
+      <form id="event-form" class="editor" hidden>
+        <h2 id="event-form-title">公演を追加</h2>
+        <div class="row">
+          <label>日付<input type="date" name="date" required></label>
+          <label>時間<input type="text" name="time" placeholder="例:14:00開演"></label>
+          <label>種類
+            <select name="category">
+              <option>リサイタル</option><option>コンサート</option><option>イベント</option><option>その他</option>
+            </select>
+          </label>
+        </div>
+        <label>公演名<input type="text" name="title" required placeholder="例:柳本幸子 ソプラノ・リサイタル"></label>
+        <label>会場<input type="text" name="venue"></label>
+        <label>出演者<textarea name="performers" rows="2" placeholder="例:柳本幸子(ソプラノ)/ ○○○○(ピアノ)"></textarea></label>
+        <label>曲目<textarea name="program" rows="4"></textarea></label>
+        <label>説明・ひとこと<textarea name="description" rows="4"></textarea></label>
+        <div class="row">
+          <div class="field">
+            <div class="label">チラシ(表)</div>
+            <div class="flyer-slot" data-slot="flyer"></div>
+          </div>
+          <div class="field">
+            <div class="label">チラシ(裏)</div>
+            <div class="flyer-slot" data-slot="flyerBack"></div>
+          </div>
+        </div>
+        <div class="actions">
+          <button type="submit" class="primary big">保存する</button>
+          <button type="button" class="ghost" data-cancel>やめる</button>
+          <button type="button" class="danger" id="delete-event">この公演を削除</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- プロフィール -->
+    <section id="tab-profile" hidden>
+      <form id="profile-form" class="editor">
+        <h2>プロフィール</h2>
+        <div class="row">
+          <label>名前<input type="text" name="name"></label>
+          <label>ローマ字<input type="text" name="nameEn"></label>
+          <label>肩書き<input type="text" name="role"></label>
+        </div>
+        <label>ひとことメッセージ<input type="text" name="catchphrase"></label>
+        <label>プロフィール本文<textarea name="bio" rows="12"></textarea></label>
+        <label>お問い合わせ先(任意)<input type="text" name="contact" placeholder="メールアドレスなど"></label>
+        <div class="field">
+          <div class="label">トップページの写真</div>
+          <div class="flyer-slot" data-slot="photo"></div>
+        </div>
+        <div class="actions"><button type="submit" class="primary big">保存する</button></div>
+      </form>
+    </section>
+  </main>
+
+  <div id="toast" class="toast"></div>
+  <script src="store.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
