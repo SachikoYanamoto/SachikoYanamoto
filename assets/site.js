@@ -45,11 +45,11 @@ const Site = (() => {
     ];
     document.getElementById("site-header").innerHTML = `
       <div class="inner">
-        <a class="brand" href="index.html"><span class="ja">柳本幸子</span><span class="en">Sachiko Yanagimoto, soprano</span></a>
+        <a class="brand" href="index.html"><span class="ja">柳本幸子</span><span class="en">Sachiko Yanamoto, soprano</span></a>
         <nav class="site-nav">${links.map(([href, label, key]) => `<a href="${href}" class="${key === active ? "active" : ""}">${label}</a>`).join("")}</nav>
       </div>`;
     document.getElementById("site-footer").innerHTML = `
-      <div class="inner"><span class="latin">Sachiko Yanagimoto — soprano</span><span>© ${new Date().getFullYear()} 柳本幸子</span></div>`;
+      <div class="inner"><span class="latin">Sachiko Yanamoto — soprano</span><span>© ${new Date().getFullYear()} 柳本幸子</span></div>`;
   }
 
   // 公演予定の1行(日付・公演名・会場・チラシ)。tag は "a" か "button"
